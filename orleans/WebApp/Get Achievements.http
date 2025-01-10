@@ -1,0 +1,8 @@
+### GET request to example server
+
+@userId = f43b0ca5-28c2-419d-a17c-d28adae3f25a
+
+GET http://localhost:5185/{{userId}}/unlockedActivities
+Content-Type: application/json
+
+###

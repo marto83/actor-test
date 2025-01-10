@@ -1,0 +1,19 @@
+### GET request to example server
+
+@userId = f43b0ca5-28c2-419d-a17c-d28adae3f25a
+@activityId = {{$random.uuid}}
+
+POST http://localhost:5185/{{userId}}/activities
+Content-Type: application/json
+
+{
+    "id": "{{activityId}}",
+    "name": "Activity 1",
+    "type": "news",
+    "data": {
+        "id": "123",
+        "title": "News Title"
+    }
+}
+
+###

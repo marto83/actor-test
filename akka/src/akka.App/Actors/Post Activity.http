@@ -1,0 +1,17 @@
+### GET request to example server
+POST http://localhost:5000/activity
+Content-Type: application/json;
+
+{
+    "userId": "123",
+    "activity": {
+        "id": "12349",
+        "name": "Activity 1",
+        "type": "news",
+        "data": {
+            "id": "123",
+            "title": "News Title"
+        }
+    }
+}
+###
