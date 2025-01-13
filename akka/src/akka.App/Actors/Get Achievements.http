@@ -1,4 +1,8 @@
 ### GET request to example server
 GET http://localhost:5000/activity/123/achievements
 
+
+
 ###
+
+GET http://localhost:5000/activity/messages

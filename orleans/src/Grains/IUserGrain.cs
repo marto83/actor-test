@@ -2,7 +2,7 @@ using OrleansTest.Grains.Models;
 
 namespace OrleansTest.Grains;
 
-public interface IUserGrain : IGrainWithGuidKey
+public interface IUserGrain : IGrainWithStringKey
 {
     Task ProcessActivity(Activity activity);
     Task<List<Achievement>> GetAchievements();

@@ -27,7 +27,6 @@ public class AchievementProcessorActor : ReceiveActor
                 !_processedActivityIds.Add(message.Activity.Id))
                 return;
 
-            Context.GetLogger().Info("Increment activity count for achievement: {Type}", _achievement.TrackedActivityType);
             _activityCount++;
 
             if (_activityCount >= _achievement.RequiredCount)

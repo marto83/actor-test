@@ -41,6 +41,7 @@ public static class AkkaConfiguration
         return builder
             .ConfigureLoggers(configBuilder =>
             {
+                configBuilder.ClearLoggers();
                 configBuilder.LogConfigOnStart = settings.LogConfigOnStart;
                 configBuilder.AddLoggerFactory();
             })
@@ -178,9 +179,7 @@ public static AkkaConfigurationBuilder ConfigureCounterActors(this AkkaConfigura
 
     if (settings.UseClustering)
     {
-        return builder.WithShardRegion<CounterActor>("counter",
-                (system, registry, resolver) => s => Props.Create(() => new CounterActor(s)),
-                extractor, settings.ShardOptions)
+        return builder
             .WithShardRegion<UserActor>("user",
                 (system, registry, resolver) => userId => Props.Create(() => new UserActor(userId)),
                 extractor, settings.ShardOptions);
@@ -188,15 +187,10 @@ public static AkkaConfigurationBuilder ConfigureCounterActors(this AkkaConfigura
 
     return builder.WithActors((system, registry, resolver) =>
     {
-        var parent =
-            system.ActorOf(
-                GenericChildPerEntityParent.Props(extractor, s => Props.Create(() => new CounterActor(s))),
-                "counters");
         var userParent =
             system.ActorOf(
                 GenericChildPerEntityParent.Props(extractor, userId => Props.Create(() => new UserActor(userId))),
                 "users");
-        registry.Register<CounterActor>(parent);
         registry.Register<UserActor>(userParent);
     });
 }

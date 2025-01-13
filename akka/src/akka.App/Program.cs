@@ -1,6 +1,8 @@
 using Akka.HealthCheck.Hosting;
 using Akka.HealthCheck.Hosting.Web;
 using akka.App.Configuration;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,13 +16,19 @@ builder.Configuration
     .AddJsonFile($"appsettings.{environment}.json", optional: true)
     .AddEnvironmentVariables();
 
+builder.Services.AddSerilog((_, lc) =>
+{
+    lc.Enrich.FromLogContext().WriteTo.Console(LogEventLevel.Warning);
+});
+    ;
+
 // Add services to the container.
 builder.Services.WithAkkaHealthCheck(HealthCheckType.All);
 builder.Services.ConfigureWebApiAkka(builder.Configuration, (akkaConfigurationBuilder, serviceProvider) =>
 {
     // we configure instrumentation separately from the internals of the ActorSystem
     akkaConfigurationBuilder.ConfigurePetabridgeCmd();
-    akkaConfigurationBuilder.WithWebHealthCheck(serviceProvider);
+    // akkaConfigurationBuilder.WithWebHealthCheck(serviceProvider);
 });
 
 builder.Services.AddControllers();

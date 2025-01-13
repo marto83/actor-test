@@ -46,3 +46,9 @@ public class AchievementUnlocked : IWithUserId
     public Achievement Achievement { get; set; }
     public string UserId { get; set; }
 }
+
+
+public record GetProcessedMessages : IWithUserId
+{
+    public string UserId { get; set; }
+}

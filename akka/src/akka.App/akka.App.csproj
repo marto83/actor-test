@@ -29,6 +29,8 @@
         <PackageReference Include="Petabridge.Cmd.Cluster" />
         <PackageReference Include="Petabridge.Cmd.Cluster.Sharding" />
         <PackageReference Include="Petabridge.Cmd.Remote" />
+        <PackageReference Include="Serilog.AspNetCore" />
+        <PackageReference Include="Serilog.Sinks.Console" />
         <PackageReference Include="Swashbuckle.AspNetCore" />
     </ItemGroup>
 

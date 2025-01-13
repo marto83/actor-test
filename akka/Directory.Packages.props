@@ -16,6 +16,8 @@
     <PackageVersion Include="Petabridge.Cmd.Cluster.Sharding" Version="$(PbmVersion)" />
     <PackageVersion Include="Petabridge.Cmd.Cluster" Version="$(PbmVersion)" />
     <PackageVersion Include="Petabridge.Cmd.Remote" Version="$(PbmVersion)" />
+    <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
   </ItemGroup>
   <!-- ASP.NET Core Package Versions -->
   <ItemGroup>

@@ -10,6 +10,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Host.UseOrleans(b =>
 {
+    b.UseMongoDBClient("mongodb://admin:1234@localhost:27017/orleans?authSource=admin");
+
+    b.AddMongoDBGrainStorage(name: "userStore", options =>
+    {
+        options.Configure(storageOptions =>
+        {
+            storageOptions.DatabaseName = "orleans";
+        });
+    });
     b.UseLocalhostClustering();
     b.UseDashboard(opts =>
     {
@@ -30,12 +39,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/{userId}/unlockedActivities", async (Guid userId) =>
+app.MapGet("/{userId}/unlockedActivities", async (string userId) =>
     {
         var grainFactory = app.Services.GetRequiredService<IGrainFactory>();
 
@@ -44,20 +48,14 @@ app.MapGet("/{userId}/unlockedActivities", async (Guid userId) =>
     })
     .WithName("GetUserAchievements");
 
-app.MapPost("/{userId}/activities", async (Guid userId, [FromBody] Activity activity) =>
+app.MapPost("/activities", async ([FromBody] ProcessActivity activity) =>
     {
         var grainFactory = app.Services.GetRequiredService<IGrainFactory>();
 
-        await grainFactory.GetGrain<IUserGrain>(userId).ProcessActivity(activity);
+        await grainFactory.GetGrain<IUserGrain>(activity.UserId).ProcessActivity(activity.Activity);
         return Results.Ok();
     })
     .WithName("ProcessActivity");
-    
-    
+
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

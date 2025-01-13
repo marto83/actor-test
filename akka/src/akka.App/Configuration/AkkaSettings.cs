@@ -51,7 +51,7 @@ public class AkkaSettings
 {
     public string ActorSystemName { get; set; } = "AkkaWeb";
 
-    public bool UseClustering { get; set; } = true;
+    public bool UseClustering { get; set; } = false;
 
     public bool LogConfigOnStart { get; set; } = false;
 

@@ -28,6 +28,12 @@ public class ActivityController : ControllerBase
         });
     }
     
+    [HttpGet("messages")]
+    public async Task<IActionResult> Messages()
+    {
+        return Ok(await _userActor.Ask(new GetProcessedMessages()));
+    }
+    
 
     [HttpPost]
     public async Task<IActionResult> ProcessActivity([FromBody] ProcessActivity request)

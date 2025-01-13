@@ -18,7 +18,6 @@ public class UserActor : ReceivePersistentActor
 
         Command<ProcessActivity>(message =>
         {
-            Context.GetLogger().Info("Processing activity: {@Activity}", message.Activity);
             var achievementProcessor = GetOrCreateAchievementProcessor(message.Activity.Type);
             achievementProcessor.Forward(message);
         });

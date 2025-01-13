@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Orleans.Runtime;
 using OrleansTest.Grains.Models;
 
 namespace OrleansTest.Grains;
@@ -54,18 +55,15 @@ public class AchievementLogicGrain : Grain, IAchievementLogicGrain
 
 public class UserGrain : Grain, IUserGrain
 {
-    private Guid GrainKey => this.GetPrimaryKey();
-    private User State { get; set; }
+    private string GrainKey => this.GetPrimaryKeyString();
 
     private Dictionary<string, IAchievementLogicGrain> _achievementGrains = new();
     
-    public UserGrain()
+    private readonly IPersistentState<User> _user;
+    
+    public UserGrain([PersistentState("user", "userStore")] IPersistentState<User> user)
     {
-        State = new User()
-        {
-            Id = GrainKey,
-            Name = "User " + GrainKey
-        };
+        _user = user;
     }
     
     private IAchievementLogicGrain GetActivityProcessorGrain(string activityType)
@@ -99,13 +97,12 @@ public class UserGrain : Grain, IUserGrain
 
     public Task<List<Achievement>> GetAchievements()
     {
-        return Task.FromResult(State.UnlockedAchievements);
+        return Task.FromResult(_user.State.UnlockedAchievements);
     }
 
-    public Task UnlockAchievement(Achievement achievement)
+    public async Task UnlockAchievement(Achievement achievement)
     {
-        State.UnlockedAchievements.Add(achievement);
-        
-        return Task.CompletedTask;
+        _user.State.UnlockedAchievements.Add(achievement);
+        await _user.WriteStateAsync();
     }
 }

@@ -40,7 +40,7 @@ public class Achievement
 [GenerateSerializer]
 public class User
 {
-    public Guid Id { get; set; }
+    public string Id { get; set; }
     public string Name { get; set; }
     public List<Achievement> UnlockedAchievements { get; set; } = new();
 }
@@ -51,7 +51,7 @@ public class ProcessActivity
     [Id(0)]
     public Activity Activity { get; set; }
     [Id(1)]
-    public Guid UserId { get; set; }
+    public string UserId { get; set; }
 }
 
 public interface IProcessActivityResult
